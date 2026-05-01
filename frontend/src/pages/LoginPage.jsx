@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -29,7 +29,6 @@ export default function LoginPage() {
     }
 
     if (isRegister) {
-      // after registering, switch to login
       setIsRegister(false);
       setForm({ email: '', password: '' });
       return;
@@ -40,42 +39,51 @@ export default function LoginPage() {
   }
 
   return (
-    <div style={{ maxWidth: '400px', margin: '100px auto' }}>
-      <h1>{isRegister ? 'Register' : 'Login'}</h1>
+    <div className="min-h-[70vh] flex items-center justify-center">
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-8 w-full max-w-md">
+        <h1 className="text-2xl font-bold text-gray-800 mb-6">
+          {isRegister ? 'Create an account' : 'Welcome back'}
+        </h1>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+        {error && (
+          <p className="text-sm text-red-500 bg-red-50 border border-red-200 rounded-lg px-4 py-2 mb-4">
+            {error}
+          </p>
+        )}
 
-      <form onSubmit={handleSubmit}>
-        <div>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
             type="email"
             placeholder="Email"
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
-            style={{ display: 'block', marginBottom: '10px', width: '100%' }}
+            className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"
           />
-        </div>
-        <div>
           <input
             type="password"
             placeholder="Password"
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
-            style={{ display: 'block', marginBottom: '10px', width: '100%' }}
+            className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"
           />
-        </div>
-        <button type="submit">{isRegister ? 'Register' : 'Login'}</button>
-      </form>
+          <button
+            type="submit"
+            className="bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-lg"
+          >
+            {isRegister ? 'Register' : 'Login'}
+          </button>
+        </form>
 
-      <p style={{ marginTop: '20px' }}>
-        {isRegister ? 'Already have an account?' : "Don't have an account?"}{' '}
-        <button
-          onClick={() => setIsRegister(!isRegister)}
-          style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'blue' }}
-        >
-          {isRegister ? 'Login' : 'Register'}
-        </button>
-      </p>
+        <p className="text-sm text-gray-500 mt-6 text-center">
+          {isRegister ? 'Already have an account?' : "Don't have an account?"}{' '}
+          <button
+            onClick={() => { setIsRegister(!isRegister); setError(''); }}
+            className="text-green-500 hover:underline font-medium"
+          >
+            {isRegister ? 'Login' : 'Register'}
+          </button>
+        </p>
+      </div>
     </div>
   );
 }
