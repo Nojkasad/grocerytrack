@@ -39,7 +39,7 @@ export default function ProductsPage() {
 
   return (
     <div>
-      <h1>Products</h1>
+      <h1 className="text-3xl font-bold text-blue-500">Products</h1>
 
       <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
         <input

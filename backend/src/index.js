@@ -3,16 +3,22 @@ const cors = require('cors');
 require('dotenv').config();
 
 const productRoutes = require('./routes/products');
-const pricesRoutes = require ('./routes/prices');
+const priceEntryRoutes = require('./routes/prices');
+const authRoutes = require('./routes/auth');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
-const authRoutes = require('./routes/auth');
-app.use('/auth', authRoutes);
-app.use(cors());
+
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
 app.use(express.json());
 
 app.use('/products', productRoutes);
-app.use('/prices',pricesRoutes);
+app.use('/prices', priceEntryRoutes);
+app.use('/auth', authRoutes);
+
 app.get('/', (req, res) => {
   res.json({ message: 'GroceryTrack API is running' });
 });

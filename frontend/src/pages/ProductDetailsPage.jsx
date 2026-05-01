@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 export default function ProductDetailsPage() {
+  const { token } = useAuth();
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [prices, setPrices] = useState([]);
-  const [form, setForm] = useState({
-    price: '',
-    storeName: '',
-    userId: '1',
-  });
+  const [form, setForm] = useState({ price: '', storeName: '' });
 
   async function loadData() {
     const productRes = await fetch(`http://localhost:3000/products/${id}`);
@@ -28,14 +26,21 @@ export default function ProductDetailsPage() {
   async function handleSubmit(e) {
     e.preventDefault();
 
+    if (!token) {
+      alert('You must be logged in to submit a price');
+      return;
+    }
+
     const res = await fetch('http://localhost:3000/prices', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
       body: JSON.stringify({
         price: Number(form.price),
         storeName: form.storeName,
         productId: Number(id),
-        userId: Number(form.userId),
       }),
     });
 
@@ -44,7 +49,7 @@ export default function ProductDetailsPage() {
       return;
     }
 
-    setForm({ price: '', storeName: '', userId: '1' });
+    setForm({ price: '', storeName: '' });
     loadData();
   }
 
@@ -57,6 +62,7 @@ export default function ProductDetailsPage() {
       <p>Barcode: {product.barcode || '—'}</p>
 
       <h2>Add price</h2>
+      {!token && <p style={{ color: 'red' }}>You must be logged in to submit a price.</p>}
       <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
         <input
           type="number"
@@ -70,12 +76,7 @@ export default function ProductDetailsPage() {
           value={form.storeName}
           onChange={(e) => setForm({ ...form, storeName: e.target.value })}
         />
-        <input
-          placeholder="User ID"
-          value={form.userId}
-          onChange={(e) => setForm({ ...form, userId: e.target.value })}
-        />
-        <button type="submit">Add price</button>
+        <button type="submit" disabled={!token}>Add price</button>
       </form>
 
       <h2>Price history</h2>
