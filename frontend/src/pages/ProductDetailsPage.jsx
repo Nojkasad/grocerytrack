@@ -13,11 +13,11 @@ export default function ProductDetailsPage() {
   async function loadData() {
     setLoading(true);
     try {
-      const productRes = await fetch(`http://localhost:3000/products/${id}`);
+      const productRes = await fetch(`https://grocerytrack-production.up.railway.app/products/${id}`);
       const productData = await productRes.json();
       setProduct(productData);
 
-      const pricesRes = await fetch(`http://localhost:3000/products/${id}/prices`);
+      const pricesRes = await fetch(`https://grocerytrack-production.up.railway.app/products/${id}/prices`);
       const pricesData = await pricesRes.json();
       setPrices(pricesData);
     } catch (error) {
@@ -36,7 +36,7 @@ export default function ProductDetailsPage() {
       alert('You must be logged in to submit a price');
       return;
     }
-    const res = await fetch('http://localhost:3000/prices', {
+    const res = await fetch('https://grocerytrack-production.up.railway.app/prices', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

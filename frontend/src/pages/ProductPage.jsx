@@ -9,7 +9,7 @@ export default function ProductsPage() {
 
   async function loadProducts() {
     setLoading(true);
-    const res = await fetch(`http://localhost:3000/products?search=${search}`);
+    const res = await fetch(`https://grocerytrack-production.up.railway.app/products?search=${search}`);
     const data = await res.json();
     setProducts(data);
     setLoading(false);
@@ -21,7 +21,7 @@ export default function ProductsPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const res = await fetch('http://localhost:3000/products', {
+    const res = await fetch('https://grocerytrack-production.up.railway.app/products', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),

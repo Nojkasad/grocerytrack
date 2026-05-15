@@ -15,7 +15,7 @@ export default function LoginPage() {
 
     const endpoint = isRegister ? '/auth/register' : '/auth/login';
 
-    const res = await fetch(`http://localhost:3000${endpoint}`, {
+    const res = await fetch(`https://grocerytrack-production.up.railway.app${endpoint}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),
